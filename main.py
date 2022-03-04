@@ -21,18 +21,18 @@ bleu = pygame.image.load("images/mobs/mob3.png").convert_alpha()
 jaune = pygame.image.load("images/mobs/mob4.png").convert_alpha()
 
 #titre
-font_title = pygame.font.SysFont("Trebuchet MS",45)
+font_title = pygame.font.SysFont("Trebuchet MS",60)
 title = font_title.render("Magic Space", True, (127, 179, 213  ))
 titleRect = title.get_rect(midtop=(windowSize[0]/2,10))
 
 #score
 score = 0
-font_score = pygame.font.SysFont("Trebuchet MS",30)
+font_score = pygame.font.SysFont("Trebuchet MS",50)
 scoreSurface = font_score.render("SCORE : {0}".format(score),True,(255,255,255 ))
-scoreRect = scoreSurface.get_rect(topleft=(30,30))
+scoreRect = scoreSurface.get_rect(topleft=(10,10))
 
 pygame.time.set_timer(USEREVENT,250)
-pygame.time.set_timer(USEREVENT + 1,5775)
+pygame.time.set_timer(USEREVENT + 1,8000)
 
 #fire
 fireSurface = pygame.image.load("images/fire.png").convert_alpha()
@@ -45,9 +45,9 @@ explosions=[]
 #lvl
 lvl = "?"
 font_lvl = pygame.font.SysFont("Trebuchet MS", 70)
-font_style = pygame.font.SysFont("Trebuchet MS",25)
+font_style = pygame.font.SysFont("Trebuchet MS",45)
 lvlSurface = font_lvl.render("{}".format(lvl),True,(255,255,255,125))
-lvlRect = lvlSurface.get_rect(midbottom = (windowSize[0]/2 + 150,windowSize[1]/2))
+lvlRect = lvlSurface.get_rect(midbottom = (windowSize[0]/2 + 250,windowSize[1]/2))
 labelSurface = font_lvl.render("Wave :",True,(255,255,255,125))
 labelRect = labelSurface.get_rect(midbottom = (windowSize[0]/2,windowSize[1]/2))
 
@@ -60,8 +60,8 @@ hardcore = [1,2,0,4,4,4,4,0,2,1]
 death = [1,1,1,1,4,4,1,1,1,1]
 
 #zones
-zoneTir = pygame.Rect((0,70),(windowSize[0],windowSize[1] - 150))
-zoneMobs = pygame.Rect((0,70),(windowSize[0],windowSize[1] - 300))
+zoneTir = pygame.Rect((0,100),(windowSize[0],windowSize[1] - 250))
+zoneMobs = pygame.Rect((0,100),(windowSize[0],windowSize[1] - 250))
 
 #bolléens/variable
 continuer = True
@@ -91,24 +91,24 @@ while continuer:
         if event.type == QUIT:
             continuer = False
         #si on appuie sur le bouton close
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 :
-            if windowSize[0]-120 < event.pos[0] < windowSize[0] and 10 < event.pos[1] < 40:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if windowSize[0]- 170 < event.pos[0] and event.pos[0] < windowSize[0] and 10 < event.pos[1] and event.pos[1] < 40:
                 continuer = False
         elif event.type == KEYDOWN:
             if event.key == K_RIGHT:
-                    changer_vitesse(vaisseau, (700,0))
+                    changer_vitesse(vaisseau, (1000,0))
             elif event.key == K_LEFT:
-                    changer_vitesse(vaisseau, (-700,0))
+                    changer_vitesse(vaisseau, (-1000,0))
             elif event.key == K_SPACE and fin == False:
-                    if len(fires) < 3:
-                        pygame.mixer.init()
-                        tir = pygame.mixer.Sound('sons/tir.mp3')
-                        tir.play()
-                        tir.set_volume(0.03)
-                        fires.append(usine_entite(fireSurface.get_rect(midbottom=vaisseau['position'])))
-                    for i in range(len(fires)):
-                        if fires[i]['vitesse'] == (0,0):
-                            changer_vitesse(fires[i],(0,-350))
+                if len(fires) < 3:
+                    pygame.mixer.init()
+                    tir = pygame.mixer.Sound('sons/tir.mp3')
+                    tir.play()
+                    tir.set_volume(0.03)
+                    fires.append(usine_entite(fireSurface.get_rect(midbottom=vaisseau['position'])))
+                for i in range(len(fires)):
+                    if fires[i]['vitesse'] == (0,0):
+                        changer_vitesse(fires[i],(0,-500))
             elif event.key == K_TAB and fin == True:
                 if color == "purple":
                     vaisseauSurface = pygame.image.load("images/vaisseau.png").convert_alpha()
@@ -118,11 +118,11 @@ while continuer:
                     vaisseauSurface = pygame.image.load("images/vaisseau purple.png").convert_alpha()
                     vaisseau = usine_entite(vaisseauSurface.get_rect(midbottom=(windowSize[0]/2,windowSize[1]-20)))
                     color = "purple"
-            elif event.key == K_RETURN and fin == True:
+            elif event.key == K_RETURN or event.key == K_KP_ENTER and fin == True:
                 endSurface = font_lvl.render("",True,(255,255,255))
-                endRect = endSurface.get_rect(midbottom=(300,375))
+                endRect = endSurface.get_rect(midbottom=(0,0))
                 styleSurface = font_style.render("",True,(255,255,255))
-                styleRect = styleSurface.get_rect(midbottom=(300,80))
+                styleRect = styleSurface.get_rect(midbottom=(0,0))
                 pygame.mixer.music.unload()
                 pygame.mixer.music.load("sons/music.mp3")
                 pygame.mixer.music.play(-1)
@@ -133,7 +133,7 @@ while continuer:
                 labelSurface = font_lvl.render("Wave :",True,(255,255,255,125))
                 labelRect = labelSurface.get_rect(midbottom = (windowSize[0]/2,windowSize[1]/2))
                 lvlSurface = font_lvl.render("{}".format(lvl),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom = (windowSize[0]/2 + 20,windowSize[1]/2 + 20))
+                lvlRect = lvlSurface.get_rect(midbottom = (windowSize[0]/2 + 200,windowSize[1]/2))
                 pygame.event.set_allowed(pygame.USEREVENT+1)
                 pygame.event.set_allowed(pygame.USEREVENT)
                 fin = False
@@ -141,14 +141,14 @@ while continuer:
         #une touche est relaché
         elif event.type == KEYUP:
             if event.key == K_RIGHT:
-                    changer_vitesse(vaisseau, (-700,0))
+                    changer_vitesse(vaisseau, (-1000,0))
             elif event.key == K_LEFT:
-                    changer_vitesse(vaisseau, (700,0))
+                    changer_vitesse(vaisseau, (1000,0))
         #event d'affichage des labels
         elif event.type == USEREVENT and fin == False:
             explosions=[]
             scoreSurface = font_score.render("SCORE : {0}".format(score),True,(255,255,255 ))
-            scoreRect = scoreSurface.get_rect(topleft=(15,15))
+            scoreRect = scoreSurface.get_rect(topleft=(10,10))
         #event d'affichage des mobs
         elif event.type == USEREVENT + 1 and fin == False:
             if score < 50:
@@ -163,7 +163,7 @@ while continuer:
             j = ecart
             if vague == 0:
                 lvlSurface = font_lvl.render("{}".format("easy"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 20,windowSize[1]/2 + 20))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in facile:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
@@ -178,7 +178,7 @@ while continuer:
                         j+=ecart
             elif vague == 1:
                 lvlSurface = font_lvl.render("{}".format("normal"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 20,windowSize[1]/2 + 20))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in normal:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
@@ -193,7 +193,7 @@ while continuer:
                         j+=ecart
             elif vague == 2:
                 lvlSurface = font_lvl.render("{}".format("medium"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 20,windowSize[1]/2 + 20))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in difficile:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
@@ -208,58 +208,58 @@ while continuer:
                         j+=ecart
             elif vague == 3:
                 lvlSurface = font_lvl.render("{}".format("hard"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(415,315))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in hard:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
-                        j+=90
+                        j+=ecart
                     elif i == 2:
                         mobs.append(usine_mob(rouge.get_rect(midtop=(j,100)),2))
-                        j+=90
+                        j+=ecart
                     elif i == 3:
                         mobs.append(usine_mob(vert.get_rect(midtop=(j,100)),3))
-                        j+=90
+                        j+=ecart
                     elif i == 4:
                         mobs.append(usine_mob(jaune.get_rect(midtop=(j,100)),4))
-                        j+=90
+                        j+=ecart
                     else:
-                        j+=90
+                        j+=ecart
             elif vague == 4:
                 lvlSurface = font_lvl.render("{}".format("expert"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(405,315))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in hardcore:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
-                        j+=55
+                        j+=ecart
                     elif i == 2:
                         mobs.append(usine_mob(rouge.get_rect(midtop=(j,100)),2))
-                        j+=55
+                        j+=ecart
                     elif i == 3:
                         mobs.append(usine_mob(vert.get_rect(midtop=(j,100)),3))
-                        j+=55
+                        j+=ecart
                     elif i == 4:
                         mobs.append(usine_mob(jaune.get_rect(midtop=(j,100)),4))
-                        j+=55
+                        j+=ecart
                     else:
-                        j+=55
+                        j+=ecart
             elif vague == 5:
                 lvlSurface = font_lvl.render("{}".format("DEATH"),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 20,windowSize[1]/2 + 20))
+                lvlRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 + 250,windowSize[1]/2))
                 for i in death:
                     if i == 1:
                         mobs.append(usine_mob(bleu.get_rect(midtop=(j,100)),1))
-                        j+=55
+                        j+=ecart
                     elif i == 2:
                         mobs.append(usine_mob(rouge.get_rect(midtop=(j,100)),2))
-                        j+=55
+                        j+=ecart
                     elif i == 3:
                         mobs.append(usine_mob(vert.get_rect(midtop=(j,100)),3))
-                        j+=55
+                        j+=ecart
                     elif i == 4:
                         mobs.append(usine_mob(jaune.get_rect(midtop=(j,100)),4))
-                        j+=55
+                        j+=ecart
                     else:
-                        j+=55
+                        j+=ecart
         elif event.type == pygame.JOYBUTTONDOWN:
             if event.button == 0 or event.button == 1 or event.button == 2 or event.button == 3 and fin == False:
                 if len(fires) < 3:
@@ -282,18 +282,18 @@ while continuer:
                     color = "purple"
             elif event.button == 7 and fin == True:
                 endSurface = font_lvl.render("",True,(255,255,255))
-                endRect = endSurface.get_rect(midbottom=(300,375))
+                endRect = endSurface.get_rect(midbottom=(0,0))
                 styleSurface = font_style.render("",True,(255,255,255))
-                styleRect = styleSurface.get_rect(midbottom=(300,80))
+                styleRect = styleSurface.get_rect(midbottom=(0,0))
                 pygame.mixer.music.load("sons/music.mp3")
                 pygame.mixer.music.play(-1)
                 score = 0
                 fires = []
                 explosions = []
                 labelSurface = font_lvl.render("Wave :",True,(255,255,255,125))
-                labelRect = labelSurface.get_rect(midbottom = (180,315))
+                labelRect = labelSurface.get_rect(midbottom = (windowSize[0]/2,windowSize[1]/2))
                 lvlSurface = font_lvl.render("{}".format(lvl),True,(255,255,255,125))
-                lvlRect = lvlSurface.get_rect(midbottom = (415,315))
+                lvlRect = lvlSurface.get_rect(midbottom = (windowSize[0]/2 + 40,windowSize[1]/2 + 40))
                 pygame.mixer.music.set_volume(0.01)
                 pygame.event.set_allowed(pygame.USEREVENT+1)
                 pygame.event.set_allowed(pygame.USEREVENT)
@@ -373,17 +373,17 @@ while continuer:
                 pygame.mixer.music.load("sons/son_end.mp3")
                 pygame.mixer.music.play()
                 pygame.mixer.music.set_volume(0.1)
-                lvlSurface = font_lvl.render("{}".format(""),True,(255,255,255,125))
+                lvlSurface = font_lvl.render("",True,(255,255,255,125))
                 if joy == True:
                     labelSurface = font_lvl.render("Press START",True,(255,255,255,125))
                     styleSurface = font_style.render("Press SELECT to change style",True, (170, 183, 184))
                 else:
                     labelSurface = font_lvl.render("Press RETURN",True,(255,255,255,125))
                     styleSurface = font_style.render("Press TAB to change style",True, (170, 183, 184))
-                labelRect = lvlSurface.get_rect(midbottom=(120,315))
-                styleRect = styleSurface.get_rect(midbottom=(300,120))
+                labelRect = lvlSurface.get_rect(midbottom=(windowSize[0]/2 - 200,windowSize[1]/2))
+                styleRect = styleSurface.get_rect(midbottom=(windowSize[0]/2,windowSize[1]/4))
                 endSurface = font_lvl.render("to restart",True,(255,255,255))
-                endRect = endSurface.get_rect(midbottom=(300,375))
+                endRect = endSurface.get_rect(midbottom=(windowSize[0]/2,windowSize[1]/1.5))
                 explosions=[]
                 mobs = []
                 fires=[]
@@ -407,7 +407,7 @@ while continuer:
     #affichages des tirs
 
     for i in range(len(fires)):
-        screen.blit(pygame.transform.smoothscale(fireSurface, (35,35)),fires[i]['rect'])
+        screen.blit(pygame.transform.smoothscale(fireSurface, (75,75)),fires[i]['rect'])
     #affichages des mobs
     for i in range(len(mobs)):
         try:
